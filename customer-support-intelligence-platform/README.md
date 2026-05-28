@@ -53,11 +53,3 @@ python src/model.py
 ```bash
 python -m streamlit run app/streamlit_app.py
 ```
-
-## Resume Description
-**Customer Support Intelligence Platform – SLA Risk Prediction and Operational Analytics**  
-Tech: Python, Streamlit, scikit-learn, pandas, NumPy, Plotly, Power BI, SQL
-
-Developed an AI-powered operational analytics platform that analyses customer support ticket data, predicts SLA breach risk, and visualises support performance metrics through an interactive dashboard.
-Built an end-to-end data pipeline for ticket cleaning, feature engineering, SLA calculation, trend analysis, and ML-based risk scoring.
-Implemented a Random Forest model to identify high-risk tickets and generate recommendations such as “Escalate now”, “Monitor closely”, or “Normal handling”.
