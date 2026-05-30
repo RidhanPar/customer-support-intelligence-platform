@@ -24,7 +24,67 @@ st.set_page_config(
     page_icon="📊",
     layout="wide",
 )
+def inject_custom_css():
+    st.markdown(
+        """
+        <style>
+        .main {
+            background-color: #f8fafc;
+        }
 
+        h1, h2, h3 {
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .stMetric {
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            padding: 18px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+        }
+
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 10px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .stTabs [data-baseweb="tab"] {
+            background-color: #ffffff;
+            border-radius: 10px 10px 0 0;
+            padding: 10px 18px;
+            border: 1px solid #e5e7eb;
+            color: #334155;
+            font-weight: 600;
+        }
+
+        .stTabs [aria-selected="true"] {
+            background-color: #fee2e2;
+            color: #dc2626;
+            border-bottom: 2px solid #ef4444;
+        }
+
+        section[data-testid="stSidebar"] {
+            background-color: #f1f5f9;
+            border-right: 1px solid #e2e8f0;
+        }
+
+        div[data-testid="stAlert"] {
+            border-radius: 12px;
+        }
+
+        .block-container {
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+inject_custom_css()
 
 # ===============================
 # Paths
