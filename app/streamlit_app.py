@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+import re
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(str(PROJECT_ROOT))
@@ -31,7 +32,7 @@ st.set_page_config(
 
 MODEL_PATH = PROJECT_ROOT / "models/sla_breach_model.pkl"
 DEMO_DATA_PATH = PROJECT_ROOT / "data/raw/support_tickets.csv"
-
+MODEL_METRICS_PATH = PROJECT_ROOT / "models/model_metrics.txt"
 
 # ===============================
 # Styling
@@ -135,7 +136,26 @@ def load_model():
     if MODEL_PATH.exists():
         return joblib.load(MODEL_PATH)
     return None
+@st.cache_data
+def load_model_metrics():
+    if not MODEL_METRICS_PATH.exists():
+        return {}, ""
 
+    metrics_text = MODEL_METRICS_PATH.read_text(encoding="utf-8")
+
+    accuracy_match = re.search(r"Accuracy:\s*([0-9.]+)", metrics_text)
+    f1_match = re.search(r"F1-score:\s*([0-9.]+)", metrics_text)
+    roc_auc_match = re.search(r"ROC AUC:\s*([0-9.]+)", metrics_text)
+    test_records_match = re.search(r"accuracy\s+[0-9.]+\s+(\d+)", metrics_text)
+
+    metrics = {
+        "accuracy": float(accuracy_match.group(1)) if accuracy_match else None,
+        "f1_score": float(f1_match.group(1)) if f1_match else None,
+        "roc_auc": float(roc_auc_match.group(1)) if roc_auc_match else None,
+        "test_records": int(test_records_match.group(1)) if test_records_match else None,
+    }
+
+    return metrics, metrics_text
 
 # ===============================
 # Helper Functions
@@ -336,8 +356,8 @@ if filtered.empty:
 # Tabs
 # ===============================
 
-tab1, tab2, tab3 = st.tabs(
-    ["Executive Dashboard", "Risk Monitor", "Dataset Explorer"]
+tab1, tab2, tab3, tab4 = st.tabs(
+    ["Executive Dashboard", "Risk Monitor", "Dataset Explorer", "Model Performance"]
 )
 
 
@@ -609,4 +629,55 @@ with tab3:
         csv,
         "filtered_support_tickets.csv",
         "text/csv",
+    )
+# ===============================
+# Tab 4: Model Performance
+# ===============================
+with tab4:
+    st.subheader("Model Performance and Validation")
+
+    st.markdown(
+        """
+        This section explains how the SLA breach prediction model performs on the test dataset.
+        These results are useful for understanding whether the model is reliable enough for
+        decision-support use cases such as ticket prioritization and operational risk monitoring.
+        """
+    )
+
+metrics, metrics_text = load_model_metrics()
+
+m1, m2, m3, m4 = st.columns(4)
+
+if metrics:
+    accuracy = metrics.get("accuracy")
+    f1_score = metrics.get("f1_score")
+    roc_auc = metrics.get("roc_auc")
+    test_records = metrics.get("test_records")
+
+    m1.metric("Accuracy", f"{accuracy * 100:.2f}%" if accuracy is not None else "N/A")
+    m2.metric("F1-score", f"{f1_score:.4f}" if f1_score is not None else "N/A")
+    m3.metric("ROC AUC", f"{roc_auc:.4f}" if roc_auc is not None else "N/A")
+    m4.metric("Test Records", f"{test_records:,}" if test_records is not None else "N/A")
+else:
+    st.warning("Model metrics file was not found.")
+
+    st.markdown("### Classification Report and Confusion Matrix")
+
+    metrics_text = load_model_metrics()
+
+    if metrics_text:
+        st.code(metrics_text, language="text")
+    else:
+        st.warning("Model metrics file was not found.")
+
+    st.markdown(
+        """
+        ### Interpretation
+
+        - The model performs strongly on the demo test dataset.
+        - The F1-score is useful because SLA breach prediction is a classification problem.
+        - ROC AUC helps evaluate how well the model separates breach and non-breach cases.
+        - The confusion matrix helps identify false positives and false negatives.
+        - In a real business environment, the model should be retrained and validated using live ticket data.
+        """
     )
