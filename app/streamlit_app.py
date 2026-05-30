@@ -413,6 +413,53 @@ with tab1:
     kpi3.metric("Avg Resolution Hours", f"{safe_mean(filtered['resolution_hours']):.1f}")
     kpi4.metric("Escalation Rate", f"{safe_mean(filtered['escalated']) * 100:.1f}%")
 
+    breach_rate = safe_mean(filtered["sla_breach"]) * 100
+    avg_resolution = safe_mean(filtered["resolution_hours"])
+    escalation_rate = safe_mean(filtered["escalated"]) * 100
+
+    top_risk_category = (
+        filtered.groupby("category")["sla_breach"]
+        .mean()
+        .sort_values(ascending=False)
+        .head(1)
+    )
+
+    top_category_name = top_risk_category.index[0] if not top_risk_category.empty else "N/A"
+    top_category_breach = top_risk_category.iloc[0] * 100 if not top_risk_category.empty else 0
+
+    st.markdown("### Automated Executive Insights")
+
+    insight_col1, insight_col2, insight_col3 = st.columns(3)
+
+    with insight_col1:
+        if breach_rate >= 70:
+            st.error(
+                f"SLA breach rate is high at {breach_rate:.1f}%. Immediate queue review is recommended."
+            )
+        elif breach_rate >= 40:
+            st.warning(
+                f"SLA breach rate is moderate at {breach_rate:.1f}%. Monitor high-priority queues closely."
+            )
+        else:
+            st.success(
+                f"SLA breach rate is controlled at {breach_rate:.1f}%. Current support flow looks stable."
+            )
+
+    with insight_col2:
+        st.info(
+            f"The highest-risk category is {top_category_name}, with a breach rate of {top_category_breach:.1f}%."
+        )
+
+    with insight_col3:
+        if escalation_rate >= 30:
+            st.warning(
+                f"Escalation rate is {escalation_rate:.1f}%, suggesting possible complexity or backlog pressure."
+            )
+        else:
+            st.success(
+                f"Escalation rate is {escalation_rate:.1f}%, indicating manageable escalation volume."
+            )
+
     st.divider()
 
     col1, col2 = st.columns(2)
