@@ -1,78 +1,71 @@
 # Customer Support Intelligence Platform
 
-A support operations intelligence platform built to monitor SLA performance, identify service risk, and predict potential SLA breaches using machine learning.
+A data analytics and machine learning platform for monitoring support operations, predicting SLA breach risk, identifying high-risk tickets, and helping support teams prioritize work using KPI dashboards and risk-based recommendations.
 
-This project combines operational analytics, risk scoring, and interactive dashboarding to help support teams prioritize high-risk tickets, monitor service trends, and make faster data-driven decisions.
-
-## Live Demo
-
-Add your Streamlit live app link here after deployment.
-
-```text
 Live Demo: https://customer-support-intelligence-platform.streamlit.app/
-```
+
+## Dashboard Preview
+
+![Dashboard Overview](assets/screenshots/01_dashboard_overview.png)
 
 ## Business Problem
 
-Support teams often manage high volumes of tickets across different priorities, channels, categories, and teams. Without a clear way to monitor SLA risk, teams may miss early warning signs that lead to delayed resolutions, escalations, and lower customer satisfaction.
+Customer support teams often manage high volumes of tickets across different priorities, channels, categories, and teams. Without a clear way to monitor SLA performance and identify early risk signals, teams may miss tickets that are likely to breach SLA.
 
-This project simulates how a support operations or service management team can use data to:
+This project simulates how a support operations or service management team can use data analytics and machine learning to:
 
-* monitor SLA performance
-* identify high-risk tickets
-* detect operational bottlenecks
-* prioritize urgent work
-* improve visibility for team leads and managers
-* support better service quality decisions
+* Monitor SLA performance
+* Identify high-risk tickets
+* Detect operational bottlenecks
+* Prioritize urgent work
+* Support faster decision-making for team leads and managers
 
-## Solution
+## Solution Overview
 
-The Customer Support Intelligence Platform provides an interactive Streamlit dashboard that allows users to upload support ticket data or use a demo dataset.
+The Customer Support Intelligence Platform provides an interactive Streamlit dashboard that combines operational analytics, SLA risk prediction, ticket-level scoring, and recommended actions.
 
-The platform helps users monitor operational KPIs, analyze SLA breach patterns, predict ticket-level breach risk, classify tickets by risk level, and generate dynamic action recommendations.
+Users can explore support ticket data, apply business filters, review KPI trends, monitor predicted SLA breach risk, and export filtered results for further analysis.
 
 ## Key Features
 
 * Executive dashboard for support operations monitoring
 * SLA breach prediction using machine learning
-* Dynamic risk thresholds for critical, high, and medium risk
 * Ticket-level risk scoring
+* Dynamic risk level classification
 * Recommended action groups based on predicted risk
-* Interactive filters for priority, category, channel, and risk level
-* Dataset explorer for detailed ticket-level inspection
-* CSV export for filtered datasets and prediction results
-* Demo dataset support for public portfolio presentation
+* Filters for priority, category, channel, team, and risk level
+* Dataset explorer for ticket-level investigation
+* Downloadable CSV output for filtered records and prediction results
+* Demo dataset included for public portfolio presentation
 
 ## Dashboard Sections
 
 ### 1. Executive Dashboard
 
-The executive dashboard provides a high-level view of support operations performance.
+The executive dashboard provides a high-level view of support operations performance, including:
 
-It includes:
-
-* total tickets
+* Total tickets
 * SLA breach rate
-* average resolution hours
-* escalation rate
+* Average resolution hours
+* Escalation rate
 * SLA breach by priority
-* breach rate by category
+* Breach rate by category
 
-This view is designed for quick operational monitoring and leadership-level visibility.
+This section is designed for quick operational monitoring and leadership-level visibility.
 
 ### 2. Risk Monitor
 
-The risk monitor focuses on SLA breach prediction and action prioritization.
+The risk monitor focuses on ticket-level SLA breach prediction and action prioritization.
 
 It includes:
 
-* average predicted risk
-* critical, high, and medium risk ticket counts
-* risk level distribution
-* recommended action mix
-* ticket-level prediction results
-* risk-based filtering
-* downloadable prediction output
+* Average predicted risk
+* Critical, high, and medium risk ticket counts
+* Risk level distribution
+* Recommended action mix
+* Ticket-level prediction output
+* Risk-based filtering
+* Downloadable prediction results
 
 This section helps support teams identify which tickets require urgent review, priority handling, monitoring, or normal handling.
 
@@ -82,76 +75,63 @@ The dataset explorer allows users to inspect the underlying ticket data.
 
 It includes:
 
-* search by ticket ID, category, team, or status
-* filtered table view
-* raw ticket-level fields
-* downloadable filtered dataset
+* Search by ticket ID, category, team, or status
+* Filtered table view
+* Raw ticket-level fields
+* Downloadable filtered dataset
 
 This section supports deeper investigation and data validation.
 
 ## Machine Learning Approach
 
-The project uses a Random Forest model to predict the probability of an SLA breach based on operational ticket features.
+The project uses a Random Forest classification model to predict the probability of an SLA breach based on operational ticket features.
 
-### Example Input Features
+Example input features include:
 
-* ticket priority
-* ticket category
-* support channel
-* assigned team
-* ticket age
-* escalation status
-* resolution hours
-* customer satisfaction score
-
-### Output
+* Ticket priority
+* Ticket category
+* Support channel
+* Assigned team
+* Ticket age
+* Escalation status
+* Resolution hours
+* Customer satisfaction score
 
 The model output is converted into:
 
-* predicted SLA breach risk score
-* risk level classification
-* recommended action group
+* Predicted SLA breach risk score
+* Risk level classification
+* Recommended action group
 
-### Risk Levels
+## Model Performance
 
-Example risk levels include:
+The model is evaluated using standard classification metrics such as accuracy, precision, recall, F1-score, and ROC AUC.
 
-* Critical
-* High
-* Medium
-* Watch
-* Low
+The current version uses a fictional demo dataset created for portfolio and testing purposes. Because the dataset is controlled and simplified, the model performance should be interpreted as a demonstration of the machine learning workflow rather than a production-level benchmark.
 
-### Recommendation Groups
+## Business Value
 
-Example recommendation groups include:
+This project demonstrates how support operations teams can use analytics and machine learning to improve service visibility and ticket prioritization.
 
-* Urgent Action
-* Priority Handling
-* Monitoring
-* Normal Handling
+The platform supports:
 
-## Screenshots
+* Faster identification of SLA risk
+* Better prioritization of high-risk tickets
+* Improved operational reporting
+* Clearer visibility for team leads and managers
+* More structured support decision-making
 
-### Dashboard Overview
+## Tech Stack
 
-![Dashboard Overview](assets/screenshots/01_dashboard_overview.png)
-
-### Operational KPIs
-
-![Operational KPIs](assets/screenshots/02_operational_kpis.png)
-
-### Risk Monitor
-
-![Risk Monitor](assets/screenshots/03_risk_monitor.png)
-
-### Recommendation Table
-
-![Recommendation Table](assets/screenshots/04_recommendation_table.png)
-
-### Dataset Explorer
-
-![Dataset Explorer](assets/screenshots/05_dataset_explorer.png)
+* Python
+* Streamlit
+* Pandas
+* NumPy
+* Scikit-learn
+* Plotly
+* Joblib
+* SQL-ready CSV workflow
+* Power BI-ready processed data
 
 ## Project Structure
 
@@ -162,39 +142,34 @@ customer-support-intelligence-platform/
 ├── assets/
 │   └── screenshots/
 ├── data/
+│   ├── raw/
+│   └── processed/
 ├── models/
 ├── notebooks/
 ├── src/
-├── README.md
-└── requirements.txt
+│   ├── data_cleaning.py
+│   ├── feature_engineering.py
+│   └── model.py
+├── requirements.txt
+└── README.md
 ```
-
-## Tech Stack
-
-* Python
-* Streamlit
-* Pandas
-* NumPy
-* Plotly
-* Scikit-learn
-* Joblib
 
 ## How to Run Locally
 
-### 1. Clone the Repository
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/RidhanPar/customer-support-intelligence-platform.git
 cd customer-support-intelligence-platform
 ```
 
-### 2. Create a Virtual Environment
+### 2. Create a virtual environment
 
 ```bash
 python -m venv venv
 ```
 
-### 3. Activate the Virtual Environment
+### 3. Activate the virtual environment
 
 For Windows:
 
@@ -208,13 +183,13 @@ For macOS or Linux:
 source venv/bin/activate
 ```
 
-### 4. Install Dependencies
+### 4. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 5. Run the App
+### 5. Run the app
 
 ```bash
 streamlit run app/streamlit_app.py
@@ -222,56 +197,57 @@ streamlit run app/streamlit_app.py
 
 ## Demo Data
 
-The project includes a demo dataset for portfolio and testing purposes.
+The project includes fictional demo support ticket data for public portfolio use.
 
 Users can either:
 
-* use the built-in demo dataset
-* upload their own CSV file with compatible ticket fields
+* Use the built-in demo dataset
+* Upload their own compatible CSV file
 
-The demo data is fictional and created for public project demonstration.
+No real customer, company, or confidential operational data is included.
 
 ## Example Use Case
 
-A support operations manager wants to understand which tickets are most likely to breach SLA.
+A support operations manager wants to identify which tickets are most likely to breach SLA.
 
 Using this dashboard, the manager can:
 
-1. Load ticket data.
-2. Review overall SLA breach rate.
-3. Identify high-risk categories or priorities.
-4. Open the risk monitor.
-5. Review tickets classified as critical or high risk.
-6. Export the prediction results.
-7. Prioritize follow-up actions for the support team.
+1. Review overall SLA performance.
+2. Filter tickets by priority, category, channel, or team.
+3. Open the risk monitor.
+4. Identify tickets classified as critical or high risk.
+5. Review recommended actions.
+6. Export prediction results.
+7. Prioritize follow-up work for the support team.
 
-## Business Value
+## Limitations
 
-This project demonstrates how support operations teams can use analytics and machine learning to improve service visibility and ticket prioritization.
+This project is built using fictional demo data and is intended for portfolio demonstration.
 
-The platform supports:
+Current limitations:
 
-* faster identification of SLA risk
-* better prioritization of high-risk tickets
-* improved operational reporting
-* clearer visibility for team leads and managers
-* more structured support decision-making
+* The dataset is simplified and does not represent a real production ticketing system.
+* Model performance may be higher than expected because the demo data is controlled.
+* The current version does not connect to a live CRM or ticketing database.
+* Role-based access control is not yet implemented.
+* Automated alerting is planned but not yet included.
 
-## Future Improvements
+## Future Enhancements
 
 Planned improvements include:
 
-* add model performance metrics directly inside the dashboard
-* add SLA trend forecasting over time
-* add team-level performance comparison
-* add aging ticket alerts
-* add automated weekly report export
-* connect the dashboard to a live database
-* add role-based access for managers and analysts
-* add integration with workflow automation tools
+* Add model performance metrics directly inside the dashboard
+* Add feature importance and explainability
+* Add SLA trend forecasting
+* Add aging ticket alerts
+* Add team-level performance comparison
+* Add automated weekly report export
+* Connect the dashboard to PostgreSQL
+* Add role-based access for managers and analysts
+* Add workflow automation integration for escalation alerts
 
 ## Portfolio Summary
 
 Customer Support Intelligence Platform is a support operations analytics project that combines SLA monitoring, machine learning risk prediction, interactive dashboards, and action recommendations.
 
-It demonstrates practical skills in data analytics, operational reporting, machine learning, support analytics, dashboard development, and data-driven decision-making.
+It demonstrates practical skills in data analytics, business intelligence, machine learning, support analytics, dashboard development, and data-driven operational decision-making.
