@@ -9,7 +9,7 @@ This project combines operational analytics, risk scoring, and interactive dashb
 Add your Streamlit live app link here after deployment.
 
 ```text
-Live Demo: Coming soon
+Live Demo: https://customer-support-intelligence-platform.streamlit.app/
 ```
 
 ## Business Problem
