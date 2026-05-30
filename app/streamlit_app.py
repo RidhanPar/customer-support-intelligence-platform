@@ -156,7 +156,45 @@ def load_model_metrics():
     }
 
     return metrics, metrics_text
+def get_feature_importance(model_bundle):
+    if model_bundle is None:
+        return pd.DataFrame()
 
+    try:
+        model_pipeline = model_bundle["model"]
+        numeric_features = model_bundle["numeric"]
+        categorical_features = model_bundle["categorical"]
+
+        preprocessor = model_pipeline.named_steps["preprocessor"]
+        classifier = model_pipeline.named_steps["classifier"]
+
+        categorical_pipeline = preprocessor.named_transformers_["cat"]
+        encoder = categorical_pipeline.named_steps["encoder"]
+
+        encoded_categorical_features = encoder.get_feature_names_out(
+            categorical_features
+        ).tolist()
+
+        feature_names = numeric_features + encoded_categorical_features
+        importances = classifier.feature_importances_
+
+        importance_df = pd.DataFrame(
+            {
+                "feature": feature_names,
+                "importance": importances,
+            }
+        )
+
+        importance_df["importance_percentage"] = (
+            importance_df["importance"] / importance_df["importance"].sum() * 100
+        )
+
+        return importance_df.sort_values(
+            "importance_percentage", ascending=False
+        ).head(15)
+
+    except Exception:
+        return pd.DataFrame()
 # ===============================
 # Helper Functions
 # ===============================
@@ -644,31 +682,68 @@ with tab4:
         """
     )
 
-metrics, metrics_text = load_model_metrics()
+    metrics, metrics_text = load_model_metrics()
 
-m1, m2, m3, m4 = st.columns(4)
+    m1, m2, m3, m4 = st.columns(4)
 
-if metrics:
-    accuracy = metrics.get("accuracy")
-    f1_score = metrics.get("f1_score")
-    roc_auc = metrics.get("roc_auc")
-    test_records = metrics.get("test_records")
+    if metrics:
+        accuracy = metrics.get("accuracy")
+        f1_score = metrics.get("f1_score")
+        roc_auc = metrics.get("roc_auc")
+        test_records = metrics.get("test_records")
 
-    m1.metric("Accuracy", f"{accuracy * 100:.2f}%" if accuracy is not None else "N/A")
-    m2.metric("F1-score", f"{f1_score:.4f}" if f1_score is not None else "N/A")
-    m3.metric("ROC AUC", f"{roc_auc:.4f}" if roc_auc is not None else "N/A")
-    m4.metric("Test Records", f"{test_records:,}" if test_records is not None else "N/A")
-else:
-    st.warning("Model metrics file was not found.")
+        m1.metric("Accuracy", f"{accuracy * 100:.2f}%" if accuracy is not None else "N/A")
+        m2.metric("F1-score", f"{f1_score:.4f}" if f1_score is not None else "N/A")
+        m3.metric("ROC AUC", f"{roc_auc:.4f}" if roc_auc is not None else "N/A")
+        m4.metric("Test Records", f"{test_records:,}" if test_records is not None else "N/A")
+    else:
+        st.warning("Model metrics file was not found.")
+
+    st.info(
+        "The current model uses fictional demo data. The results demonstrate the machine learning workflow, "
+        "but should not be treated as production-level performance without validation on real operational data."
+    )
 
     st.markdown("### Classification Report and Confusion Matrix")
-
-    metrics_text = load_model_metrics()
 
     if metrics_text:
         st.code(metrics_text, language="text")
     else:
         st.warning("Model metrics file was not found.")
+
+    st.markdown("### Top Model Drivers")
+
+    model_bundle = load_model()
+    feature_importance = get_feature_importance(model_bundle)
+
+    if not feature_importance.empty:
+        fig = px.bar(
+            feature_importance.sort_values("importance_percentage"),
+            x="importance_percentage",
+            y="feature",
+            orientation="h",
+            title="Top Features Influencing SLA Breach Prediction",
+            labels={
+                "importance_percentage": "Importance (%)",
+                "feature": "Feature",
+            },
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
+        display_importance = feature_importance.copy()
+        display_importance["importance_percentage"] = display_importance[
+            "importance_percentage"
+        ].round(2)
+
+        st.dataframe(
+            display_importance[["feature", "importance_percentage"]],
+            use_container_width=True,
+        )
+    else:
+        st.info(
+            "Feature importance is not available. Train the model first using `python src/model.py`."
+        )
 
     st.markdown(
         """
@@ -678,6 +753,7 @@ else:
         - The F1-score is useful because SLA breach prediction is a classification problem.
         - ROC AUC helps evaluate how well the model separates breach and non-breach cases.
         - The confusion matrix helps identify false positives and false negatives.
+        - Feature importance shows which operational factors influence the model prediction most.
         - In a real business environment, the model should be retrained and validated using live ticket data.
         """
     )
