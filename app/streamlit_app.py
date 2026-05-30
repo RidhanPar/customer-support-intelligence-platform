@@ -13,7 +13,7 @@ sys.path.append(str(PROJECT_ROOT))
 
 from src.data_cleaning import clean_data
 from src.feature_engineering import create_features
-
+from src.model import train_model
 
 # ===============================
 # Page Configuration
@@ -33,7 +33,7 @@ st.set_page_config(
 MODEL_PATH = PROJECT_ROOT / "models/sla_breach_model.pkl"
 DEMO_DATA_PATH = PROJECT_ROOT / "data/raw/support_tickets.csv"
 MODEL_METRICS_PATH = PROJECT_ROOT / "models/model_metrics.txt"
-
+PROCESSED_DATA_PATH = PROJECT_ROOT / "data/processed/cleaned_tickets.csv"
 # ===============================
 # Styling
 # ===============================
@@ -136,6 +136,20 @@ def load_model():
     if MODEL_PATH.exists():
         return joblib.load(MODEL_PATH)
     return None
+def train_demo_model_from_app():
+    """
+    Trains the demo SLA breach prediction model from the included sample dataset.
+    This is used by the Streamlit app when the model file is missing or needs refresh.
+    """
+    PROCESSED_DATA_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+    cleaned_df = clean_data(str(DEMO_DATA_PATH))
+    cleaned_df.to_csv(PROCESSED_DATA_PATH, index=False)
+
+    train_model()
+
+    load_model.clear()
+    load_model_metrics.clear()
 @st.cache_data
 def load_model_metrics():
     if not MODEL_METRICS_PATH.exists():
@@ -325,7 +339,21 @@ with st.sidebar:
         value=20,
     )
 
-    st.caption("Tip: train the model first using `python src/model.py`.")
+    st.markdown("### Model Controls")
+
+    if st.button("Train / Refresh Model", use_container_width=True):
+        with st.spinner("Training model using the demo support ticket dataset..."):
+            try:
+                train_demo_model_from_app()
+                st.success("Model trained successfully. Refreshing dashboard...")
+                st.rerun()
+            except Exception as e:
+                st.error(f"Model training failed: {e}")
+
+    if MODEL_PATH.exists():
+        st.success("Model is ready")
+    else:
+        st.warning("Model is not trained yet")
 
 
 # ===============================
