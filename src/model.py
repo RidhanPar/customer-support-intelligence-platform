@@ -27,7 +27,6 @@ MODEL_PATH = PROJECT_ROOT / "models/sla_breach_model.pkl"
 METRICS_PATH = PROJECT_ROOT / "models/model_metrics.txt"
 
 FEATURES_NUMERIC = [
-    "resolution_hours",
     "ticket_age_hours",
     "hour_created",
     "message_length",
