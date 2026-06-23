@@ -1,4 +1,4 @@
-
+Random Forest:
 Accuracy: 0.8700
 F1-score: 0.9172
 ROC AUC: 0.8994
@@ -17,3 +17,23 @@ weighted avg       0.87      0.87      0.86       100
 Confusion Matrix:
 [[15 11]
  [ 2 72]]
+
+XGBoost:
+Accuracy: 0.8700
+F1-score (XGBoost): 0.9139
+ROC AUC (XGBoost): 0.8721
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.78      0.69      0.73        26
+           1       0.90      0.93      0.91        74
+
+    accuracy                           0.87       100
+   macro avg       0.84      0.81      0.82       100
+weighted avg       0.87      0.87      0.87       100
+
+
+Confusion Matrix:
+[[18  8]
+ [ 5 69]]
