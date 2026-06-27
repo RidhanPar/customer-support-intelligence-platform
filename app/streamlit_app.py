@@ -20,7 +20,7 @@ from src.model import train_model
 # ===============================
 
 st.set_page_config(
-    page_title="Customer Support Intelligence Platform",
+    page_title="People & Support Analytics — Workforce Intelligence Platform",
     page_icon="📊",
     layout="wide",
 )
@@ -162,12 +162,12 @@ st.markdown(
 # ===============================
 
 st.markdown(
-    '<div class="big-title">Customer Support Intelligence Platform</div>',
+    '<div class="big-title">People &amp; Support Analytics — Workforce Intelligence Platform</div>',
     unsafe_allow_html=True,
 )
 
 st.markdown(
-    '<div class="subtitle">SLA breach prediction, operational analytics, and support risk monitoring.</div>',
+    '<div class="subtitle">Agent KPIs, workload distribution, response time trends, and resolution rates for People teams.</div>',
     unsafe_allow_html=True,
 )
 

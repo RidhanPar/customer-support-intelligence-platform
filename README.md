@@ -1,6 +1,6 @@
 # Customer Support Intelligence Platform
 
-Support-operations decision-support prototype for SLA monitoring, ticket-level breach-risk scoring, and prioritized follow-up.
+Workforce and service quality analytics platform designed to give People teams real-time visibility into support team performance. Tracks agent KPIs, workload distribution, response time trends, and resolution rates to support capacity planning and people decisions. Built with Python, Streamlit, and Plotly.
 
 Live demo: https://customer-support-intelligence-platform.streamlit.app/
 
@@ -17,6 +17,13 @@ Live demo: https://customer-support-intelligence-platform.streamlit.app/
 - Docker support for containerised deployment
 - CSV export for filtered records and prediction results
 - Tests and GitHub Actions validation
+
+## People Team Use Cases
+
+- Identify underperforming team members early for targeted coaching
+- Track workload distribution to support fair scheduling and capacity planning
+- Monitor team-level resolution trends to flag burnout risk before attrition occurs
+- Replace manual weekly HR review meetings with same-day dashboard visibility
 
 ## Evidence Boundary
 
@@ -153,6 +160,8 @@ python -m compileall app src tests
 | SQL | SQLite via built-in `sqlite3` |
 | Persistence | Joblib |
 | Containerisation | Docker |
+
+**Keywords:** people-analytics · workforce-intelligence · hr-analytics · streamlit · sla-breach-prediction · support-operations · machine-learning
 
 ## Limitations
 
